@@ -1,0 +1,8 @@
+.navbar {
+  max-width: 60em;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 500;
+}

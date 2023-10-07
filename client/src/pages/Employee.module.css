@@ -1,0 +1,32 @@
+.Container {
+  position: relative;
+  margin: 0 auto;
+  width: 100%;
+  height: 90%;
+  flex-direction: column;
+  /* max-width: 60em; */
+}
+
+.list-Container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  flex-direction: column;
+}
+
+.Add-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  bottom: 0;
+  right: 2rem;
+  font-size: 4em;
+  border-radius: 50%;
+  transition: all 0.2s;
+}
+
+.Add-button:active {
+  transform: scale(0.9);
+}
