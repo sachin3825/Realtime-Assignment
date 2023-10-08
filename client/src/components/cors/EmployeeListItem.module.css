@@ -1,0 +1,73 @@
+li {
+  padding: 0.5em 0.5em;
+  margin: 0;
+
+  border-bottom: 1px solid var(--grey-primary);
+  display: flex;
+  justify-content: space-between;
+}
+.employee {
+  display: flex;
+  gap: 2px;
+}
+
+.employee p {
+  margin: 0;
+}
+
+.employee .name {
+  font-weight: 700;
+  font-size: larger;
+}
+.employee .job,
+.date {
+  font-size: medium;
+  color: gray;
+}
+
+.date {
+  font-size: small;
+}
+
+li:last-child {
+  border-bottom: none;
+}
+
+li:first-child {
+  margin-top: -1em;
+}
+
+.buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.2em;
+}
+
+.buttons .deleteButton {
+  background-color: #ff4d4d;
+  border: 1px solid #ff4d4d;
+}
+
+.buttons .updateButton {
+  text-decoration: none;
+  background: #32cd32;
+}
+
+.buttons .deleteButton,
+.updateButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5em;
+  color: #fff;
+  transition: all 0.2s;
+  cursor: pointer;
+  border-radius: 10%;
+  font-size: 3rem;
+}
+
+.buttons .deleteButton:active,
+.updateButton:active {
+  transform: scale(0.9);
+}

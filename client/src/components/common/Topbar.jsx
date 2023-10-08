@@ -7,39 +7,41 @@ import { useNavigate, useParams } from "react-router-dom";
 
 import styles from "./topbar.module.css";
 
-const Topbar = () => {
-  const { id } = useParams();
+const Topbar = ({ id }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const { pathname } = location;
   const dispatch = useDispatch();
-  const employees = useSelector((state) => state.employees);
 
-  // Check if employees is defined
-  const employee = employees ? employees.find((e) => e.id === id) : null;
+  console.log(useParams());
 
+  console.log(id);
   function getPageName(pathname) {
     if (pathname === "/") {
       return "Employee List";
-    } else if (pathname === "/updateEmployee") {
-      return "Update Employee Details";
     } else if (pathname === "/addEmployee") {
-      return "Add Employee Details ";
+      return "Add Employee Details";
+    } else {
+      return "Update Employee Details";
     }
   }
 
   const currentPageName = getPageName(pathname);
 
+  const showDeleteIcon = pathname !== "/" && pathname !== "/addEmployee";
+
   const handleDeleteEmployee = () => {
-    dispatch(deleteEmployeeAction(id));
-    navigate("/");
+    if (window.confirm("Are you sure you want to delete this employee?")) {
+      dispatch(deleteEmployeeAction(id, navigate));
+      navigate("/");
+    }
   };
 
   return (
     <nav>
       <div className={styles.navbar}>
         <span>{currentPageName}</span>
-        {pathname === "/updateEmployee" && employee && (
+        {showDeleteIcon && (
           <span className='delete-icon' onClick={handleDeleteEmployee}>
             <FaTrash />
           </span>

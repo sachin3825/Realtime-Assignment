@@ -22,7 +22,6 @@ function AddEmployee() {
 
   return (
     <div>
-      <h1>Add Employee</h1>
       <Form
         onSubmit={handleAddEmployee}
         initialValues={{ name: "", jobRole: "", startDate: "", endDate: "" }}

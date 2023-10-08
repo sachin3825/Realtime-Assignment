@@ -30,6 +30,7 @@ html {
 
 :root {
   --blue-color-primary: rgba(29, 161, 242, 1);
+  --grey-primary: rgba(242, 242, 242, 1);
 }
 
 nav {

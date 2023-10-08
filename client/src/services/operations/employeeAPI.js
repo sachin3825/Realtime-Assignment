@@ -4,6 +4,7 @@ import {
   addEmployee,
   updateEmployee,
   deleteEmployee,
+  setEmployees,
 } from "../../redux/slices/employeeSlice";
 import { apiConnector } from "../apiconnector";
 import { endpoints } from "../apis";
@@ -21,48 +22,39 @@ export function addEmployeeAction(name, jobRole, startDate, endDate, navigate) {
     dispatch(setLoading(true));
 
     try {
-      // Make the API call to add an employee
       const response = await apiConnector("POST", ADD_EMPLOYEE_API, {
         name,
         jobRole,
         startDate,
         endDate,
       });
-      console.log(ADD_EMPLOYEE_API);
 
-      // Dispatch the action to add the employee to the Redux store
       dispatch(addEmployee(response.data));
 
-      // Display a success toast
       toast.success("Employee added successfully");
 
-      // Navigate back to the home page
       navigate("/");
     } catch (error) {
-      // Handle errors and display an error toast
       console.error("Error adding employee:", error);
       toast.error("Failed to add employee");
+    } finally {
+      dispatch(setLoading(false));
+      toast.dismiss(toastId);
     }
-
-    dispatch(setLoading(false));
-    toast.dismiss(toastId);
   };
 }
 
-export function updateEmployeeAction(
+export const updateEmployeeAction = (
   id,
   name,
   jobRole,
   startDate,
   endDate,
   navigate
-) {
+) => {
   return async (dispatch) => {
     const toastId = toast.loading("Updating employee...");
-    dispatch(setLoading(true));
-
     try {
-      // Make the API call to update an employee
       const response = await apiConnector(
         "put",
         UPDATE_EMPLOYEE_API.replace(":id", id),
@@ -74,64 +66,57 @@ export function updateEmployeeAction(
         }
       );
 
-      // Dispatch the action to update the employee in the Redux store
       dispatch(updateEmployee(response.data));
 
-      // Display a success toast
       toast.success("Employee updated successfully");
 
-      // Navigate back to the home page
       navigate("/");
     } catch (error) {
-      // Handle errors and display an error toast
       console.error("Error updating employee:", error);
       toast.error("Failed to update employee");
+    } finally {
+      toast.dismiss(toastId);
     }
-
-    dispatch(setLoading(false));
-    toast.dismiss(toastId);
   };
-}
+};
 
-export function deleteEmployeeAction(id) {
+export const deleteEmployeeAction = (id, navigate) => {
   return async (dispatch) => {
     const toastId = toast.loading("Deleting employee...");
+    try {
+      await apiConnector("delete", DELETE_EMPLOYEE_API.replace(":id", id));
+
+      dispatch(deleteEmployee(id));
+
+      toast.success("Employee deleted successfully");
+
+      navigate("/");
+    } catch (error) {
+      console.error("Error deleting employee:", error);
+      toast.error("Failed to delete employee");
+    } finally {
+      toast.dismiss(toastId);
+    }
+  };
+};
+
+export const getAllEmployeesAction = () => {
+  return async (dispatch) => {
+    const toastId = toast.loading("Loading employees...");
     dispatch(setLoading(true));
 
     try {
-      // Make the API call to delete an employee
-      await apiConnector("delete", DELETE_EMPLOYEE_API.replace(":id", id));
+      const response = await apiConnector("GET", GET_ALL_EMPLOYEES_API);
 
-      // Dispatch the action to delete the employee from the Redux store
-      dispatch(deleteEmployee({ id }));
+      dispatch(setEmployees(response.data.employees));
 
-      // Display a success toast
-      toast.success("Employee deleted successfully");
+      toast.success("Employees loaded successfully");
     } catch (error) {
-      // Handle errors and display an error toast
-      console.error("Error deleting employee:", error);
-      toast.error("Failed to delete employee");
+      console.error("Error loading employees:", error);
+      toast.error("Failed to load employees");
+    } finally {
+      dispatch(setLoading(false));
+      toast.dismiss(toastId);
     }
-
-    dispatch(setLoading(false));
-    toast.dismiss(toastId);
   };
-}
-
-export const getAllEmployeesAction = async () => {
-  const toastId = toast.loading("Loading...");
-  let result = [];
-  try {
-    const response = await apiConnector("GET", GET_ALL_EMPLOYEES_API);
-    // console.log(response);
-    if (!response?.data?.employees) {
-      throw new Error("API responded with an error: " + response?.data?.error);
-    }
-    result = response?.data?.employees;
-  } catch (error) {
-    console.error("GET_ALL_EMPLOYEES_API API ERROR:", error);
-    toast.error(error.message);
-  }
-  toast.dismiss(toastId);
-  return result;
 };

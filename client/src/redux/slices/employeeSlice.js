@@ -1,3 +1,4 @@
+// employeeSlice.js
 import { createSlice } from "@reduxjs/toolkit";
 
 const employeeSlice = createSlice({
@@ -8,18 +9,23 @@ const employeeSlice = createSlice({
   },
   reducers: {
     addEmployee: (state, action) => {
-      state.data = action.payload;
+      state.data.push(action.payload);
     },
-
     updateEmployee: (state, action) => {
-      state.data = state.data.map((employee) =>
-        employee.id === action.payload.id ? action.payload : employee
+      const index = state.data.findIndex(
+        (employee) => employee._id === action.payload._id
       );
+      if (index !== -1) {
+        state.data[index] = action.payload;
+      }
     },
     deleteEmployee: (state, action) => {
       state.data = state.data.filter(
-        (employee) => employee.id !== action.payload.id
+        (employee) => employee._id !== action.payload.id
       );
+    },
+    setEmployees: (state, action) => {
+      state.data = action.payload;
     },
     setLoading: (state, action) => {
       state.loading = action.payload;
@@ -27,6 +33,11 @@ const employeeSlice = createSlice({
   },
 });
 
-export const { addEmployee, updateEmployee, deleteEmployee, setLoading } =
-  employeeSlice.actions;
+export const {
+  addEmployee,
+  updateEmployee,
+  deleteEmployee,
+  setEmployees,
+  setLoading,
+} = employeeSlice.actions;
 export default employeeSlice.reducer;

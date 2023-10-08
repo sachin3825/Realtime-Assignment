@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { IoIosAddCircle } from "react-icons/io";
 import { Link } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 import {
   getAllEmployeesAction,
   deleteEmployeeAction,
@@ -8,26 +9,22 @@ import {
 import styles from "./Employee.module.css";
 import noEmployee from "../assets/noEmployee.png";
 import EmployeeListItem from "../components/cors/EmployeeListItems";
-import { toast } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const EmployeeList = () => {
-  const [employees, setEmployees] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const employees = useSelector((state) => state.employee.data);
+  const loading = useSelector((state) => state.employee.loading);
+  console.log(employees);
+
+  const refreshEmployeeList = () => {
+    dispatch(getAllEmployeesAction());
+  };
 
   useEffect(() => {
-    const fetchEmployeeData = async () => {
-      try {
-        const employeeData = await getAllEmployeesAction();
-        setEmployees(employeeData);
-      } catch (error) {
-        console.error("Error fetching employee data:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchEmployeeData();
-  }, []);
+    refreshEmployeeList();
+  }, [dispatch]);
 
   const currentEmployees = employees.filter((employee) => !employee.endDate);
   const previousEmployees = employees.filter((employee) => employee.endDate);
@@ -35,15 +32,11 @@ const EmployeeList = () => {
   const handleDeleteEmployee = async (id) => {
     if (window.confirm("Are you sure you want to delete this employee?")) {
       try {
-        await deleteEmployeeAction(id);
-        toast.success("Employee deleted successfully");
-
-        setEmployees((prevEmployees) =>
-          prevEmployees.filter((employee) => employee.id !== id)
-        );
+        await dispatch(deleteEmployeeAction(id, navigate));
+        refreshEmployeeList();
+        navigate("/");
       } catch (error) {
         console.error("Error deleting employee:", error);
-        toast.error("Failed to delete employee");
       }
     }
   };
@@ -58,27 +51,27 @@ const EmployeeList = () => {
           <div>Loading...</div>
         ) : employees.length !== 0 ? (
           <>
-            <section>
-              <h2>Current Employees</h2>
+            <section className={styles["Employeelist-current"]}>
+              <h3 className={styles.Employeelist}>Current Employees</h3>
               <ul>
                 {currentEmployees.map((employee) => (
                   <EmployeeListItem
-                    key={employee.id}
+                    key={employee._id}
                     employee={employee}
-                    onDelete={handleDeleteEmployee}
+                    onDelete={() => handleDeleteEmployee(employee._id)}
                   />
                 ))}
               </ul>
             </section>
 
             <section>
-              <h2>Previous Employees</h2>
+              <h3>Previous Employees</h3>
               <ul>
                 {previousEmployees.map((employee) => (
                   <EmployeeListItem
-                    key={employee.id}
+                    key={employee._id}
                     employee={employee}
-                    onDelete={handleDeleteEmployee}
+                    onDelete={() => handleDeleteEmployee(employee._id)}
                   />
                 ))}
               </ul>

@@ -12,6 +12,13 @@ exports.addEmployee = async (req, res) => {
         .json({ error: "Name, job role, and start date are required." });
     }
 
+    // Validation: Check if startDate is less than endDate
+    if (startDate && endDate && new Date(startDate) >= new Date(endDate)) {
+      return res
+        .status(400)
+        .json({ error: "Start date must be earlier than end date." });
+    }
+
     const employee = new Employee({
       name,
       jobRole,
