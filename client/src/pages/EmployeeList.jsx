@@ -78,7 +78,7 @@ const EmployeeList = () => {
             </section>
           </>
         ) : (
-          <div>
+          <div className={styles.image}>
             <img src={noEmployee} alt='No Employee available' />
           </div>
         )}
