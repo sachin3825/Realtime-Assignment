@@ -19,7 +19,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
   cors({
-    origin: "https://realtime-assignment.vercel.app/",
+    origin: "https://realtime-assignment.vercel.app",
     tempFileDir: "/temp",
   })
 );
