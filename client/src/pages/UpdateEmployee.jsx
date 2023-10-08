@@ -41,11 +41,24 @@ function UpdateEmployee() {
   };
 
   return (
-    <div>
+    <div
+      style={{
+        height: "90%",
+      }}
+    >
       <Topbar id={id} />
-      <h1>Update Employee</h1>
-      <Form onSubmit={handleUpdateEmployee} initialValues={employee} />
-      <button onClick={handleDeleteEmployee}>Delete Employee</button>
+      <div
+        style={{
+          width: "100%",
+          height: "100%",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          flexDirection: "column",
+        }}
+      >
+        <Form onSubmit={handleUpdateEmployee} initialValues={employee} />
+      </div>
     </div>
   );
 }

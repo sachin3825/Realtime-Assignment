@@ -1,9 +1,15 @@
 .form {
   display: flex;
   flex-direction: column;
-  max-width: 900px;
+  justify-content: space-between;
+  height: 50%;
+  position: relative;
+  max-width: 70rem;
   margin: 0 auto;
   padding: 20px;
+  border: 1px solid #ccc;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  border-radius: 10px;
 }
 
 .icon {
@@ -14,23 +20,25 @@
   display: flex;
   flex-wrap: wrap;
   width: 100%;
-  gap: 0.5em;
-  justify-content: space-between;
+  /* height: max-content; */
+  /* gap: 0.2em; */
+  align-items: center;
+  justify-content: space-evenly;
 }
 
 .inputGroup {
-  width: 50%;
+  width: 100%;
   flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 0.1em 0.5em;
   flex-direction: row;
-  margin-bottom: 15px;
   border: 1px solid gray;
   border-radius: 5px;
   cursor: pointer;
   transition: border 0.3s;
+  margin: 0.5em;
 }
 
 .inputGroup:focus {
@@ -74,30 +82,109 @@ input[type="date"] {
   outline: none;
 }
 
-.submitButton {
-  margin-top: 15px;
+.custom-date-picker {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.custom-date-picker div {
+  padding: 3px 5px;
+}
+
+.form-buttons {
+  align-self: last baseline;
+  display: flex;
+  align-items: center;
+  justify-content: right;
+  gap: 15px;
+  width: 100%;
+  padding-top: 1em;
+  border-top: 1px solid #ccc;
+}
+
+.form-buttons button {
   align-self: flex-end;
   padding: 10px 20px;
-  background: #007bff;
-  color: #fff;
   border: none;
   border-radius: 5px;
-  font-size: 18px;
+  font-size: 1em;
   cursor: pointer;
   outline: none;
 }
 
-@media (max-width: 767px) {
+.submitButton {
+  background: var(--blue-color-primary);
+  color: #fff;
+}
+.cancelButton {
+  color: var(--blue-color-primary);
+}
+
+.dropdown {
+  position: relative;
+  width: 100%;
+  display: flex;
+}
+
+.dropdownItem {
+  display: flex;
+  font-size: medium;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0.5em 0.5em;
+}
+
+.options {
+  font-size: medium;
+  margin-top: 5rem;
+  overflow-y: hidden;
+
+  position: absolute;
+  background-color: #fff;
+  z-index: 2;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  width: 100%;
+}
+.options ul {
+  padding: 0;
+  text-align: center;
+  width: 100%;
+}
+
+.options ul li:hover {
+  background: var(--light-blue);
+}
+
+@media (max-width: 768px) {
   .form {
     padding: 10px;
+    height: 98%;
+    border: none;
+    box-shadow: none;
   }
 
-  .submitButton {
-    align-self: center;
-    margin-top: 20px;
+  .inputGroup select .options {
+    position: absolute;
+    bottom: 0;
   }
 
-  .inputGroup {
-    width: 100%;
+  .options {
+    border: 1px solid rgb(184, 182, 182);
+    bottom: -20px;
+    right: 0;
+    text-align: center;
+    width: inherit;
+    border-top-right-radius: 30px;
+    border-top-left-radius: 30px;
+  }
+  .dropdown {
+    position: static;
+  }
+  .options ul {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 }

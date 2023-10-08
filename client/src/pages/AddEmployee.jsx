@@ -21,7 +21,14 @@ function AddEmployee() {
   };
 
   return (
-    <div>
+    <div
+      style={{
+        height: "90%",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
       <Form
         onSubmit={handleAddEmployee}
         initialValues={{ name: "", jobRole: "", startDate: "", endDate: "" }}
